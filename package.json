@@ -1,0 +1,29 @@
+{
+  "name": "cobot",
+  "version": "0.0.1",
+  "description": "Cobot is a Discord bot that plays programming music 24/7.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pr0gGenie/Cobot.git"
+  },
+  "keywords": [
+    "discord-bot"
+  ],
+  "author": "Goutham Krishna Shabu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Pr0gGenie/Cobot/issues"
+  },
+  "homepage": "https://github.com/Pr0gGenie/Cobot#readme",
+  "dependencies": {
+    "discord.js": "^14.17.2",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "eslint": "^9.17.0"
+  }
+}
