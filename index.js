@@ -1,5 +1,7 @@
 // Require the necessary discord.js classes
-const { Client, Events, GatewayIntentBits } = require('discord.js');
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const dotenv = require('dotenv').config();
 
 
@@ -13,3 +15,5 @@ client.once(Events.ClientReady, readyClient => {
 
 // Login to Discord with your bot's token
 client.login(process.env.DISCORD_TOKEN);
+
+client.commands = new Collection();
