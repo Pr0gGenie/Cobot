@@ -20,8 +20,11 @@
   },
   "homepage": "https://github.com/Pr0gGenie/Cobot#readme",
   "dependencies": {
+    "@discord-player/extractor": "^7.0.0",
+    "discord-player": "^7.0.0",
     "discord.js": "^14.17.2",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "ffmpeg-static": "^5.2.0"
   },
   "devDependencies": {
     "eslint": "^9.17.0"
