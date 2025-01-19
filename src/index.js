@@ -71,9 +71,5 @@ initPlayer().catch(console.error);
 // Finally, we export the player exports object
 module.exports = playerExports;
 
-const searchQuery = "golden hour";
-const result = await playerInstance.search(searchQuery);
-console.log(result);
-
 // Login to Discord with your bot's token
 client.login(TOKEN);

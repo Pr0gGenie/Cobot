@@ -2,7 +2,8 @@
   "name": "cobot",
   "version": "0.0.1",
   "description": "Cobot is a Discord bot that plays programming music 24/7.",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
