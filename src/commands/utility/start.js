@@ -22,7 +22,7 @@ module.exports = {
         }
 
         const botVoiceChannel = guild.members.me?.voice?.channel;
-        if (botVoiceChannel !== voiceChannel) {
+        if (botVoiceChannel && botVoiceChannel !== voiceChannel) {
             return interaction.reply('The bot is already playing in another channel!');
         }
 
