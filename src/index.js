@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const { initPlayer } = require('./playerinit');
+const { initPlayer } = require('./playerInit');
 const { TOKEN } = require('dotenv').config().parsed;
 
 // Create a new client instance
