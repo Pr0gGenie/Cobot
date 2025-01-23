@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 const { useMainPlayer } = require("discord-player");
-const player = useMainPlayer();
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
+
 const presets = JSON.parse(
   fs.readFileSync("./src/start/presets.json"),
   "utf-8",
@@ -29,6 +29,7 @@ module.exports = {
     const { guild, member, options } = interaction;
     const selectedPreset = options.getString("playlist", true);
     const voiceChannel = member?.voice?.channel;
+    const player = useMainPlayer();
 
     if (!guild || !voiceChannel) {
       return interaction.reply(
@@ -65,9 +66,11 @@ module.exports = {
         return interaction.followUp("No tracks found!");
       }
 
-      await player.play(voiceChannel, result, {
-        nodeOptions: { leaveOnEnd: true },
-      });
+      await player.play(voiceChannel, result, { 
+        nodeOptions: {
+          leaveOnEmpty: false,
+          repeatMode: 2,
+      }});
       return interaction.followUp(`Playing the playlist: ${selectedPreset}`);
     } catch (error) {
       console.error(error);
