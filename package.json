@@ -1,6 +1,6 @@
 {
   "name": "cobot",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Cobot is a Discord bot that plays programming music 24/7.",
   "type": "commonjs",
   "main": "src/index.js",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@discord-player/extractor": "^7.0.0",
     "discord-player": "^7.0.0",
+    "discord-player-youtubei": "^1.4.1",
     "discord.js": "^14.17.2",
     "dotenv": "^16.4.7",
     "ffmpeg-static": "^5.2.0"
