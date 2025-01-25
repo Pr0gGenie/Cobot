@@ -2,44 +2,57 @@ const { useQueue } = require("discord-player");
 const { SlashCommandBuilder, GuildMember, Guild } = require("discord.js");
 const fs = require("node:fs");
 const presets = JSON.parse(
-    fs.readFileSync("./src/start/presets.json"),
-    "utf-8",
-)
+  fs.readFileSync("./src/config/presets.json"),
+  "utf-8",
+);
 
-// TODO: Make it possible for users to add presets to the queue and remove them as needed
-// ALSO: Instead of a presets command, just use queue command, and add another command to start the bot to play music
+const queue = [];
+// TODO: Make it possible for users to add presets [✓ done] to the queue and remove them as needed
 module.exports = {
+  queue,
   data: new SlashCommandBuilder()
     .setName("queue")
     .setDescription("Manage the server queue")
-    .addStringOption((option) =>
-      option
-        .setName("list")
-        .setDescription("View the current queue"))   
-    .addStringOption((option) =>
-      option
+    .addSubcommand((subcommand) =>
+      subcommand
         .setName("add")
         .setDescription("Add a preset to the queue")
-        .addChoices(
-            ...Object.keys(presets).map((name) => ({
+        .addStringOption((option) =>
+          option
+            .setName("preset")
+            .setDescription("Add a preset to the queue")
+            .setRequired(true)
+            .addChoices(
+              ...Object.keys(presets).map((name) => ({
                 name: name,
                 value: name,
-            })),
-        )
+              })),
+            ),
+        ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName("list")
+        .setDescription("List the presets in the queue"),
     ),
-
-    async execute(interaction) {
-        const queue = useQueue({
-          interaction: interaction,
-          metadata: {
-            channel: interaction.channel,
-          },
-        });
-      
-        if (interaction.options.getString("list") === "list") {
-        }
-      
-        if (interaction.options.getString("add") === "add") {
-          }
-        }
+  async execute(interaction) {
+    if (interaction.options.getSubcommand() == "add") {
+      presetToAdd = interaction.options.getString("preset");
+      const queueCount = queue.push(presetToAdd);
+      return interaction.reply(
+        `Added **${queue[queue.length - 1]}** to the queue`,
+      );
+    }
+    if (interaction.options.getSubcommand() == "list") {
+      let queueList = "";
+      for (let i = 0; i < queue.length; i++) {
+        queueList += `${i + 1}. ${queue[i]}\n`;
+      }
+      return interaction.reply(
+        queue.length
+          ? `**Current Queue:**\n${queueList}`
+          : "The queue is empty!",
+      );
+    }
+  },
 };
