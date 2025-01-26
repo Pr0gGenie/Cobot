@@ -36,6 +36,11 @@ module.exports = {
         .setDescription("List the presets in the queue"),
     ),
   async execute(interaction) {
+    // SO right now the problem with this way of managing the queue for the purpose of having a custom preset names displayed is that it be will the same across all the guild the bot is on
+    // So will have to find a different way
+    // And another problem will be I won't be able to use custom names for each preset for each guild
+    // Unless I create a database or some for each guild
+    // For now it shall be considered a bot for ones own server 
     if (interaction.options.getSubcommand() == "add") {
       presetToAdd = interaction.options.getString("preset");
       const queueCount = queue.push(presetToAdd);

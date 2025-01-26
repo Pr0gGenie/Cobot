@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
-const { useMainPlayer } = require("discord-player");
+const { useMainPlayer, useQueue } = require("discord-player");
 const fs = require("node:fs");
 const path = require("node:path");
 const { queue } = require("./queue");
@@ -47,29 +47,39 @@ module.exports = {
 
     await interaction.deferReply();
 
-    const currentSelection = queue[queue.length - queue.length];
-    const playlistUrl = presets[currentSelection];
+    // const currentSelection = queue[queue.length - queue.length];
+    // const playlistUrl = presets[currentSelection];
 
-    try {
-      const result = await player.search(playlistUrl);
-      if (!result.tracks.length) {
-        return interaction.followUp("No tracks found!");
-      }
-
-      await player.play(voiceChannel, result, {
+    for (i = 0; i < queue.length; i++) {
+      player.play(voiceChannel, presets[queue[i]], {
         nodeOptions: {
           leaveOnEmpty: false,
-          repeatMode: 2,
+          repeatMode: 2
         },
-      });
+      })
+    };
+    // try {
+    //   const result = await player.search(playlistUrl);
+    //   if (!result.tracks.length) {
+    //     return interaction.followUp("No tracks found!");
+    //   }
+
+      
+      
+      // await player.play(voiceChannel, result, {
+      //   nodeOptions: {
+      //     leaveOnEmpty: false,
+      //     repeatMode: 2,
+      //   },
+      // });
 
       // TODO: Play the next preset in queue after this current preset finishes
 
       queue.shift();
       return interaction.followUp(`Playing the playlist: ${currentSelection}`);
-    } catch (error) {
-      console.error(error);
-      return interaction.followUp("An error occurred while playing the preset");
-    }
+    // } catch (error) {
+    //   console.error(error);
+    //   return interaction.followUp("An error occurred while playing the preset");
+    // }
   },
 };
