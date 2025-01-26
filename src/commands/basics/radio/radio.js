@@ -1,5 +1,5 @@
-const { SlashCommandBuilder, GuildMember, Guild } = require("discord.js");
-const presets = require("../presets");
+const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
+const presets = require("../../../config/presets.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ module.exports = {
             .addStringOption((option) =>
                 option
                     .setName("preset")
-                    .setDescription("Add a preset to the queue")
+                    .setDescription("Selection of presets to play")
                     .setRequired(true)
                     .addChoices(
                         ...Object.keys(presets).map((name) => ({
@@ -32,7 +32,7 @@ module.exports = {
             .setDescription("Replaces the playing preset with a different one"))
             .addStringOption((option) =>
                 option
-                    .setName("preset")
+                    .setName("replace_with")
                     .setDescription("Replace with this preset")
                     .setRequired(true)
                     .addChoices(
@@ -52,5 +52,58 @@ module.exports = {
     
 
   async execute(interaction) {
+    const { guild, member } = interaction;
+    const voiceChannel = member?.voice?.channel;
+    const player = useMainPlayer();
+
+    if (interaction.options.getSubcommand() == "start") {
+        if (!guild || !voiceChannel) {
+          return interaction.reply(
+            "You need to be in a voice channel to play music!",
+          );
+        }
+
+        const botVoiceChannel = guild.members.me?.voice?.channel;
+        if (botVoiceChannel && botVoiceChannel !== voiceChannel) {
+          return interaction.reply(
+            "The bot is already playing in another channel!",
+          );
+        }
+
+        if (!guild.members.me.permissions.has(PermissionsBitField.Flags.Connect)) {
+          return interaction.reply(
+            "I do not have permission to join the voice channel!",
+          );
+        }
+
+        if (!guild.members.me.permissions.has(PermissionsBitField.Flags.Speak)) {
+          return interaction.reply(
+            "I do not have permission to speak in the voice channel!",
+          );
+        }
+        
+        await interaction.deferReply();
+        const playlistUrl = presets[interaction.options.getString("preset")];
+
+        try {
+          const result = await player.search(playlistUrl);
+          if (!result.tracks.length) {
+            return interaction.followUp("No tracks found!");
+          }
+    
+          await player.play(voiceChannel, result, {
+            nodeOptions: {
+              leaveOnEmpty: false,
+              repeatMode: 2,
+            },
+          });
+    
+          return interaction.followUp(`Playing the preset: **${interaction.options.getString("preset")}**`);
+        } catch (error) {
+          console.error(error);
+          return interaction.followUp("An error occurred while playing the preset");
+        }
+
+    }
   },
 };
