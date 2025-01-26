@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
-const presets = require("../../../config/presets.json");
+const presets = require("../../config/presets.json");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -103,7 +103,15 @@ module.exports = {
           console.error(error);
           return interaction.followUp("An error occurred while playing the preset");
         }
+    }
 
+    if (interaction.options.getSubcommand() == "stop") {
+        if (guild.members.me.voice.channel)
+            useQueue(guild.id).delete();
+        else {
+            return interaction.reply("I am not in a voice channel!");
+        }
+        return interaction.reply("Disconnected from the voice channel!");
     }
   },
 };

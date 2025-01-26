@@ -2,8 +2,6 @@ const { SlashCommandBuilder, PermissionsBitField } = require("discord.js");
 const { useMainPlayer } = require("discord-player");
 const fs = require("node:fs");
 const path = require("node:path");
-const { queue } = require("./queue");
-const { Internal } = require("@discord-player/extractor");
 
 const presets = JSON.parse(
   fs.readFileSync("./src/config/presets.json"),
