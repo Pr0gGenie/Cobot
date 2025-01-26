@@ -57,6 +57,7 @@ module.exports = {
   async execute(interaction) {
     const { guild, member } = interaction;
     const voiceChannel = member?.voice?.channel;
+    const botVoiceChannel = guild.members.me?.voice?.channel;
     const player = useMainPlayer();
 
     if (interaction.options.getSubcommand() == "start") {
@@ -66,10 +67,9 @@ module.exports = {
           );
         }
 
-        const botVoiceChannel = guild.members.me?.voice?.channel;
         if (botVoiceChannel && botVoiceChannel !== voiceChannel) {
           return interaction.reply(
-            "The bot is already playing in another channel!",
+            "I am playing in another channel!",
           );
         }
 
@@ -115,6 +115,38 @@ module.exports = {
             return interaction.reply("I am not in a voice channel!");
         }
         return interaction.reply("Disconnected from the voice channel!");
+    }
+
+    if (interaction.options.getSubcommand() == "replace") {
+      if (!botVoiceChannel) {
+        return interaction.reply(
+          "I am not playing any preset right now",
+        );
+      }
+      
+      useQueue(guild.id).delete();
+      await interaction.deferReply();
+      const playlistUrl = presets[interaction.options.getString("replace_with")];
+
+      try {
+        const result = await player.search(playlistUrl);
+        if (!result.tracks.length) {
+          return interaction.followUp("No tracks found!");
+        }
+  
+        await player.play(voiceChannel, result, {
+          nodeOptions: {
+            leaveOnEmpty: false,
+            repeatMode: 2,
+          },
+        });
+  
+        return interaction.followUp(`Replaced the playing preset with **${interaction.options.getString("preset")}**`);
+      } catch (error) {
+        console.error(error);
+        return interaction.followUp("An error occurred while playing the preset");
+      }
+
     }
   },
 };
