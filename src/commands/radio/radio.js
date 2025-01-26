@@ -118,6 +118,12 @@ module.exports = {
     }
 
     if (interaction.options.getSubcommand() == "replace") {
+      if (!guild || !voiceChannel) {
+        return interaction.reply(
+          "You need to be in a voice channel to replace the preset!",
+        );
+      }
+
       if (!botVoiceChannel) {
         return interaction.reply(
           "I am not playing any preset right now",
