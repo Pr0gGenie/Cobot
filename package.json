@@ -1,6 +1,6 @@
 {
   "name": "cobot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Cobot is a Discord bot that plays programming music 24/7.",
   "type": "commonjs",
   "main": "src/index.js",
