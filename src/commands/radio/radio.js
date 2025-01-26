@@ -141,7 +141,7 @@ module.exports = {
           },
         });
   
-        return interaction.followUp(`Replaced the playing preset with **${interaction.options.getString("preset")}**`);
+        return interaction.followUp(`Replaced the playing preset with **${interaction.options.getString("replace_with")}**`);
       } catch (error) {
         console.error(error);
         return interaction.followUp("An error occurred while playing the preset");
