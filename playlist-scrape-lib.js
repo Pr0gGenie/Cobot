@@ -1,6 +1,6 @@
 /* This script is the library version of the scraping script where it can be used in another file (use this one for commands)
 Example use:
-const { scrapePlaylist } = require("./playlist-scrape-lib.js {path to file} ")
+const { scrapePlaylist } = require("./playlist-scrape-lib.js (or whatever the path to file is) ");
 
 -- other code --
 scrapePlaylist('playboicarti');
