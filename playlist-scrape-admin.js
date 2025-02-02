@@ -93,7 +93,7 @@ async function autoScrollPage(page) {
 }
 
 // Main execution
-const targetChannelHandle = 'TheWeeknd'; // Change to desired channel handle
+const targetChannelHandle = ''; // Change to desired channel handle
 console.log(`Starting playlist scraping for channel: ${targetChannelHandle}`);
 
 scrapeYouTubePlaylistsFromChannel(targetChannelHandle).then((scrapedPlaylists) => {
